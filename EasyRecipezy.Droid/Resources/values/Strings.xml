@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EasyRecipezy</string>
+    <string name="duration_text">Duration: </string>
+    <string name="difficulty_text">Difficulty: </string>
+    <string name="ingredients_text">Ingredients</string>
+    <string name="method_text">Method</string>
+</resources>

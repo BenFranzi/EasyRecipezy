@@ -1,0 +1,4 @@
+﻿<resources>
+    <dimen name="padding">8dp</dimen>
+    <dimen name="doublePadding">16dp</dimen>
+</resources>

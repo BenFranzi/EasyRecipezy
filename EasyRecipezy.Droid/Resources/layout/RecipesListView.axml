@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <MvxRecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recipes_rv"
+        local:MvxItemTemplate="@layout/recipe_item"
+        local:MvxBind="ItemsSource Recipes; ItemClick ItemSelected"/>
+</RelativeLayout>
