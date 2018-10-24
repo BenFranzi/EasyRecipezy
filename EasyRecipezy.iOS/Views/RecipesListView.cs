@@ -55,22 +55,18 @@ namespace EasyRecipezy.iOS.Views
                 //Note: need to put in the Reuse Identifier in storyboard
                 var recipeCell = (RecipeCell)tableView.DequeueReusableCell("RecipeCell", indexPath);
                 //Add inner cell action event 
-                //Note: remove first to prevent issuese
+                //Note: remove first to prevent issues
                 recipeCell.DurationActionEvent -= Cell_DurationActionEvent;
                 recipeCell.DurationActionEvent += Cell_DurationActionEvent;
                 return recipeCell;        
             }
 
-            void Cell_DurationActionEvent(object sender, EventArgs e)
+            void Cell_DurationActionEvent(object sender, RecipeEventArgs e)
             {
-                //Convert sender object to RecipeCell
-                MvxTableViewCell cell = sender as RecipeCell;
-                //Convert the context of the cell to Recipe
-                if (DurationClicked != null && cell != null)
+                if (DurationClicked != null)
                 {
-                    var context = cell.DataContext as Recipe;
                     //Execute event handler that is being listened to by the table view
-                    DurationClicked.Execute(context);
+                    DurationClicked.Execute(e.CurrentRecipe);
                 }
             }
         }

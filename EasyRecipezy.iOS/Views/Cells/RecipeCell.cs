@@ -1,4 +1,5 @@
 ﻿using System;
+using EasyRecipezy.Core.Models;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using UIKit;
@@ -8,7 +9,12 @@ namespace EasyRecipezy.iOS.Views.Cells
 {
     public partial class RecipeCell : MvxTableViewCell
     {
-        public event EventHandler DurationActionEvent;
+        /**
+         * Understanding Handling and raising events
+         * https://docs.microsoft.com/en-us/dotnet/standard/events/
+         * https://docs.microsoft.com/en-us/dotnet/api/system.eventhandler-1?view=netframework-4.7.2
+         */
+        public event EventHandler<RecipeEventArgs> DurationActionEvent;
 
         protected RecipeCell(IntPtr handle) : base(handle)
         {
@@ -24,32 +30,35 @@ namespace EasyRecipezy.iOS.Views.Cells
             base.AwakeFromNib();
             //Prevent highlighting of cell onclick
             this.SelectionStyle = UITableViewCellSelectionStyle.None;
-            //Configure TGR
+            //Links for more information
             //https://docs.microsoft.com/en-us/xamarin/ios/app-fundamentals/touch/ios-touch-walkthrough#Gesture_Recognizer_Samples
             //https://github.com/xamarin/recipes/blob/master/Recipes/ios/input/touch/tap-gesture/TapGesture/TapGestureViewController.cs
             //https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/gestures/tap
-            UITapGestureRecognizer DurationLblTgr = new UITapGestureRecognizer((s) => {
-                DurationAction_TouchEvent(s, new EventArgs());
-            })
-            {
-                CancelsTouchesInView = false,
-                NumberOfTapsRequired = 1
-            };
-            UITapGestureRecognizer DurationIvTgr = new UITapGestureRecognizer((s) => {
-                DurationAction_TouchEvent(s, new EventArgs());
-            })
-            {
-                CancelsTouchesInView = false,
-                NumberOfTapsRequired = 1
-            };
+            //Configuration for label
+            UITapGestureRecognizer DurationLblTapGestureRecognizer = new UITapGestureRecognizer(TapEventTriggered);
+            DurationLblTapGestureRecognizer.NumberOfTapsRequired = 1;
+            DurationLblTapGestureRecognizer.CancelsTouchesInView = false;
             DurationLbl.UserInteractionEnabled = true;
+            DurationLbl.AddGestureRecognizer(DurationLblTapGestureRecognizer);
+            //Configuration for imageview
+            UITapGestureRecognizer DurationIvTapGestureRecognizer = new UITapGestureRecognizer(TapEventTriggered);
+            DurationIvTapGestureRecognizer.NumberOfTapsRequired = 1;
+            DurationIvTapGestureRecognizer.CancelsTouchesInView = false;
             DurationIv.UserInteractionEnabled = true;
+            DurationIv.AddGestureRecognizer(DurationIvTapGestureRecognizer);
             //Note: only a single gesture recogniser can be attached to an element
             //https://developer.apple.com/documentation/uikit/
-            DurationLbl.AddGestureRecognizer(DurationLblTgr);
-            DurationIv.AddGestureRecognizer(DurationIvTgr);
             CellInit();
         }
+
+        void TapEventTriggered()
+        {
+            if (DurationActionEvent != null)
+            {
+                DurationActionEvent.Invoke(this, new RecipeEventArgs(this.DataContext as Recipe));
+            }
+        }
+
 
         private void CellInit()
         {
@@ -65,25 +74,26 @@ namespace EasyRecipezy.iOS.Views.Cells
                  * display on the cell. In Android this binding is performed in the XML 
                  * of the recipe_item.
                  */
-                var set = this.CreateBindingSet<RecipeCell, RecipeCellData>();
+                var set = this.CreateBindingSet<RecipeCell, Recipe>();
                 set.Bind(NameLbl).To(mv => mv.Name);
                 set.Bind(DurationLbl).To(mv => mv.Duration);
                 set.Apply();
             });
         }
+    }
 
-        /**
-         * Invokes event handler listened to by the table view source
-         * https://docs.microsoft.com/en-us/dotnet/api/system.eventargs?redirectedfrom=MSDN&view=netframework-4.7.2
-         */
-        void DurationAction_TouchEvent(object sender, EventArgs e)
+    /**
+     * Custom args for the duration click event
+     */
+    public class RecipeEventArgs : EventArgs
+    {
+        public Recipe CurrentRecipe { get; set; }
+        public RecipeEventArgs(Recipe recipe)
         {
-            Console.Write("It reached the handler");
-            if (DurationActionEvent != null)
-            {
-                DurationActionEvent.Invoke(this, new EventArgs());
-            }
+            CurrentRecipe = recipe;
         }
     }
+
+
 }
 
