@@ -1,12 +1,15 @@
 ﻿using System;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
+using UIKit;
 using static EasyRecipezy.Core.RecipesListViewModel;
 
 namespace EasyRecipezy.iOS.Views.Cells
 {
     public partial class RecipeCell : MvxTableViewCell
     {
+        public event EventHandler DurationActionEvent;
+
         protected RecipeCell(IntPtr handle) : base(handle)
         {
         }
@@ -19,6 +22,32 @@ namespace EasyRecipezy.iOS.Views.Cells
         public override void AwakeFromNib()
         {
             base.AwakeFromNib();
+            //Prevent highlighting of cell onclick
+            this.SelectionStyle = UITableViewCellSelectionStyle.None;
+            //Configure TGR
+            //https://docs.microsoft.com/en-us/xamarin/ios/app-fundamentals/touch/ios-touch-walkthrough#Gesture_Recognizer_Samples
+            //https://github.com/xamarin/recipes/blob/master/Recipes/ios/input/touch/tap-gesture/TapGesture/TapGestureViewController.cs
+            //https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/gestures/tap
+            UITapGestureRecognizer DurationLblTgr = new UITapGestureRecognizer((s) => {
+                DurationAction_TouchEvent(s, new EventArgs());
+            })
+            {
+                CancelsTouchesInView = false,
+                NumberOfTapsRequired = 1
+            };
+            UITapGestureRecognizer DurationIvTgr = new UITapGestureRecognizer((s) => {
+                DurationAction_TouchEvent(s, new EventArgs());
+            })
+            {
+                CancelsTouchesInView = false,
+                NumberOfTapsRequired = 1
+            };
+            DurationLbl.UserInteractionEnabled = true;
+            DurationIv.UserInteractionEnabled = true;
+            //Note: only a single gesture recogniser can be attached to an element
+            //https://developer.apple.com/documentation/uikit/
+            DurationLbl.AddGestureRecognizer(DurationLblTgr);
+            DurationIv.AddGestureRecognizer(DurationIvTgr);
             CellInit();
         }
 
@@ -41,6 +70,19 @@ namespace EasyRecipezy.iOS.Views.Cells
                 set.Bind(DurationLbl).To(mv => mv.Duration);
                 set.Apply();
             });
+        }
+
+        /**
+         * Invokes event handler listened to by the table view source
+         * https://docs.microsoft.com/en-us/dotnet/api/system.eventargs?redirectedfrom=MSDN&view=netframework-4.7.2
+         */
+        void DurationAction_TouchEvent(object sender, EventArgs e)
+        {
+            Console.Write("It reached the handler");
+            if (DurationActionEvent != null)
+            {
+                DurationActionEvent.Invoke(this, new EventArgs());
+            }
         }
     }
 }

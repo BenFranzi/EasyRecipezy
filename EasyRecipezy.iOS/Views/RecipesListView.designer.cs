@@ -13,6 +13,9 @@ namespace EasyRecipezy.iOS.Views
 	partial class RecipesListView
 	{
 		[Outlet]
+		UIKit.UITapGestureRecognizer DurationTgr { get; set; }
+
+		[Outlet]
 		UIKit.UITableView RecipesTableView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -20,6 +23,11 @@ namespace EasyRecipezy.iOS.Views
 			if (RecipesTableView != null) {
 				RecipesTableView.Dispose ();
 				RecipesTableView = null;
+			}
+
+			if (DurationTgr != null) {
+				DurationTgr.Dispose ();
+				DurationTgr = null;
 			}
 		}
 	}

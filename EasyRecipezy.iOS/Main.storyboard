@@ -56,9 +56,15 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3i-vD-KSZ" userLabel="DurationLbl">
-                                                    <rect key="frame" x="216" y="11" width="144" height="21"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mab-v0-Paq" userLabel="DurationIv">
+                                                    <rect key="frame" x="311" y="12" width="49" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.87058823529999996" green="0.57254901960000004" blue="0.1843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x3i-vD-KSZ" userLabel="DurationLbl">
+                                                    <rect key="frame" x="188" y="12" width="115" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <gestureRecognizers/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -66,6 +72,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="DurationIv" destination="Mab-v0-Paq" id="7lr-6M-8Rg"/>
                                             <outlet property="DurationLbl" destination="x3i-vD-KSZ" id="bDT-x9-xaT"/>
                                             <outlet property="NameLbl" destination="eIZ-ak-ddO" id="Eyc-9e-Iuo"/>
                                         </connections>
@@ -87,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NFw-Ab-wJe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="932" y="133.58320000000001"/>
+            <point key="canvasLocation" x="932" y="132.68365817091455"/>
         </scene>
         <!--Single Recipe View-->
         <scene sceneID="lhs-GK-8mq">

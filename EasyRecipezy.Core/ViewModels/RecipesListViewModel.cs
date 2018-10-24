@@ -62,6 +62,28 @@ namespace EasyRecipezy.Core
             }
         }
 
+        public virtual IMvxAsyncCommand<Recipe> DurationOfItemSelected
+        {
+            get
+            {
+                //Passes clicked item to next view model
+                return new MvxAsyncCommand<Recipe>(async (item) => {
+                    //Modified object to demonstrate different click event
+                    Recipe modifiedItem = new Recipe()
+                    {
+                        Name = item.Name + " from duration click event",
+                        Difficulty = item.Difficulty,
+                        Duration = item.Duration,
+                        Ingredients = item.Ingredients,
+                        Method = item.Method,
+                        Image = item.Image
+                };
+                    await _NavigationService.Navigate<SingleRecipeViewModel, Recipe>(modifiedItem); //the next view model takes item as a parameter
+                });
+            }
+        }
+
+
         /**
          * View model for the recipe cells in iOS to access the data from the recipes list.
          * This class isn't used in Android as the list objects are bound directly to the list items.
